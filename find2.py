@@ -12,7 +12,7 @@ def main(argv):
     for dir in argv:
         if not os.path.exists(dir):
             print(f"ERREUR: Le dossier {dir} n'existe pas!")
-            continue
+            quit(2)
 
         # os.chdir(dir)
         files = []
