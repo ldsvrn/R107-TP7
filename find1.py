@@ -3,6 +3,7 @@
 import sys
 import os
 
+
 def main(argv):
     if not argv:
         print("ERREUR: Pas assez d'arguments!")
