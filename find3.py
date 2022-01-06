@@ -4,12 +4,28 @@ import sys
 import os
 import getopt
 
+# HAHAHAHAH CA FONCTIONNE SANS OS.WALK :!!!!!!!!!!!!!!!!!!!!!
+
 
 def help(error, errno = 132):
     print(f"ERREUR: {error}")
     print("\t# Script de recherche:")
     print("Utilisation: ./find.py -d DOSSIER -f FICHIER A CHERCHER")
     quit(errno)
+
+
+results = []
+dirs = []
+
+
+def findFile(dir, toFind):
+    for obj in os.listdir(dir):
+        path = os.path.join(dir, obj)
+        if os.path.isdir(path):
+            dirs.append(path)
+        elif os.path.isfile(path):
+            if obj == toFind:
+                results.append(path)
 
 
 def main(argv):
@@ -22,13 +38,13 @@ def main(argv):
         help("arguments!")
 
     rootdir = ""
-    toSearch = ""
+    toFind = ""
     for i in opts:
         match i[0]:
             case '-d':
                 rootdir = i[1]
             case '-f':
-                toSearch = i[1]
+                toFind = i[1]
 
     if not os.path.exists(rootdir):
         print(f"ERREUR: {rootdir} n'existe pas!")
@@ -37,10 +53,10 @@ def main(argv):
         print(f"ERREUR: {rootdir} n'est pas un dossier!")
         quit(20)
 
-    results = []
-    for (root, dirs, files) in os.walk(rootdir):
-        if toSearch in files:
-            results.append(os.path.join(root, toSearch))
+    dirs.append(rootdir)
+    for item in dirs:
+        # print(f"for i in dirs: i {item} => dirs = {dirs}")
+        findFile(item, toFind)
 
     for i in results:
         print(i)
