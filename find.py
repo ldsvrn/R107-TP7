@@ -5,28 +5,21 @@ import os
 import getopt
 
 
-def aide(msg):
-    print(msg)
-    print(...)  # affiche le nom du script et comment il faut appeler ce script
-    exit()
-
-
-    def recherche(dossier, fichier):
-        contenuDuRépertoire = os.listdir(...)
+def help(error, errno = 132):
+    print(f"ERREUR: {error}")
+    print("\t# Script de recherche:")
+    print("Utilisation: ./find.py -d DOSSIER -f FICHIER A CHERCHER")
+    quit(errno)
 
 
 def main(argv):
     if not argv:
-        print("ERREUR: Pas assez d'arguments!")
-        quit(22)
+        help("Pas assez d'arguments!", 22)
 
     try:
         opts, args = getopt.getopt(argv, "d:f:")
     except:
-        print("Error")
-        quit()
-
-    print(opts, args)
+        help("arguments!")
 
     rootdir = ""
     toSearch = ""
@@ -44,15 +37,16 @@ def main(argv):
         print(f"ERREUR: {rootdir} n'est pas un dossier!")
         quit(20)
 
-    dirs = []
-    files = []
+    results = []
+    for (root, dirs, files) in os.walk(rootdir):
+        if toSearch in files:
+            results.append(os.path.join(root, toSearch))
 
-    for item in rootdir:  # pour chaque élément (elt) du répertoire
-        if os.path.isdir(item):  # si c’est un dossier
-            dirs.append(os.path.join(rootdir, item))
-        elif os.path.isfile(item):  # sinon si c’est un fichier
-            files.append(os.path.join(rootdir, item))
+    for i in results:
+        print(i)
+
 
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+    quit(0)
